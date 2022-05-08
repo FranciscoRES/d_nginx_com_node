@@ -11,4 +11,20 @@ services:
     environment:
       - MYSQL_DATABASE=db0
       - MYSQL_ROOT_PASSWORD=r0Ot
+    
+    networks:
+      - db_net
+
+  node:
+    build: node/build_ctx
+    container_name: njs
+    restart: always
+    
+    depends_on:
+      - db
+    
+    networks:
+      - db_net
       
+networks:
+  db_net:
