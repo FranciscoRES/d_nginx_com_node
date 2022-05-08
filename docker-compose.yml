@@ -25,6 +25,19 @@ services:
     
     networks:
       - db_net
-      
+      - rp_net
+
+  rp:
+    build: nginx
+    container_name: ngx_rp
+    restart: always
+
+    ports:
+      - "8080:80"
+    
+    networks:
+      - rp_net
+
 networks:
   db_net:
+  rp_net:
