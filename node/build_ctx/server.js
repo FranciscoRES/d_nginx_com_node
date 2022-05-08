@@ -20,24 +20,24 @@ connection.query(sql, function (err, res) {
 	if (err) throw err;
 })
 
-var qResults;
-
-connection.query(`SELECT * FROM names`, function(err, res, _) {
-	if (err) throw err;
-	qResults = res;
-});
-
 connection.end()
 
 const express = require('express')
 const app = express()
 const port = 5000;
 
-app.get('/', function (req, res) {
-	var msg = '<h1>Full Cycle Rocks!<h1>';
-	msg += '<h2>DB Entry #0 - id: ' + qResults[0].id + '; name: ' + qResults[0].name + '<h2>';
-	msg += '<h2>DB Entry #1 - id: ' + qResults[1].id + '; name: ' + qResults[1].name + '<h2>';
-    res.send(msg)
+app.get('/', function (_, res) {
+	const connection = mysql.createConnection(config)
+	connection.query(`SELECT * FROM names`, async function(err, qRes, _) {
+		var msg = '<h1>Full Cycle Rocks!<h1>';
+		if (err) console.log(err);
+		else {
+			msg += '<h2>DB Entry #0 - id: ' + qRes[0].id + '; name: ' + qRes[0].name + '<h2>';
+			msg += '<h2>DB Entry #1 - id: ' + qRes[1].id + '; name: ' + qRes[1].name + '<h2>';
+		}
+		res.send(msg)
+	});
+	connection.end()
 });
 
 app.listen(port, () => {
