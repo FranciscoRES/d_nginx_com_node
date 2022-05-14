@@ -18,6 +18,8 @@ services:
   node:
     build: node/build_ctx
     container_name: njs
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 30s docker-entrypoint.sh
+    command: node server.js
     restart: always
     
     depends_on:
